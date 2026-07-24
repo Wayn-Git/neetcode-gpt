@@ -3,33 +3,30 @@ from numpy.typing import NDArray
 
 
 class Solution:
-    def get_derivative(self, model_prediction: NDArray[np.float64], ground_truth: NDArray[np.float64], N: int, X: NDArray[np.float64], desired_weight: int) -> float:
-        # note that N is just len(X)
-        return -2 * np.dot(ground_truth - model_prediction, X[:, desired_weight]) / N
+    def forward(self, x: NDArray[np.float64], w: NDArray[np.float64], b: float, activation: str) -> float:
+        # x: 1D input array
+        # w: 1D weight array (same length as x)
+        # b: scalar bias
+        # activation: "sigmoid" or "relu"
+        #
+        # Pre-activation: z = dot(x, w) + b
+        # Sigmoid: σ(z) = 1 / (1 + exp(-z))
+        # ReLU: max(0, z)
+        # return round(your_answer, 5)
+        # Formula for an perceptron = input x weights + bias -> activation -> output
 
-    def get_model_prediction(self, X: NDArray[np.float64], weights: NDArray[np.float64]) -> NDArray[np.float64]:
-        return np.squeeze(np.matmul(X, weights))
+        
 
-    learning_rate = 0.01
+        z = np.dot(x, w) + b
+        z = float(z)
+        sigmoid = 1/(1+ np.exp(-z))
+        relu = max(0, z)
 
-    def train_model(
-        self,
-        X: NDArray[np.float64],
-        Y: NDArray[np.float64],
-        num_iterations: int,
-        initial_weights: NDArray[np.float64]
-    ) -> NDArray[np.float64]:
-        # For each iteration:
-        #   1. Compute predictions with get_model_prediction(X, weights)
-        #   2. For each weight index j, compute gradient with get_derivative()
-        #   3. Update: weights[j] -= learning_rate * gradient
-        # Return np.round(final_weights, 5)
+        if activation == "sigmoid":
+            output = float(sigmoid)
+        else:
+            output = float(relu)
 
-        n = len(initial_weights)
-        X_len = len(X)
 
-        for i in range(num_iterations):
-            y_pred = self.get_model_prediction(X, initial_weights)
-            for j in range(n):
-               initial_weights[j] -= self.learning_rate * self.get_derivative(y_pred, Y, X_len, X, j)
-        return np.round(initial_weights, 5)                                                                    
+
+        return round (output, 5)
