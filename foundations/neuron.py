@@ -20,7 +20,7 @@ class Solution:
         z = np.dot(x, w) + b
         z = float(z)
         sigmoid = 1/(1+ np.exp(-z))
-        relu = max(0, z)
+        relu = np.maximum(0, z)
 
         if activation == "sigmoid":
             output = float(sigmoid)
