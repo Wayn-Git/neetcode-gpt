@@ -16,22 +16,8 @@ class Solution:
         # Loss: L = 0.5 * (y_hat - y_true)^2
         # Return: (dL_dw rounded to 5 decimals, dL_db rounded to 5 decimals)
 
-        dL_dw = 0.0
-        dL_db = 0.0
-        iteration = 10
-        learning_rate = 0.01
-
-        print(w)
-
-        def sigmoid(z):
-            return 1 / (1 + np.exp(-z))
-
-        print(w.ndim)
-        print(w.shape)
-
-
         z = np.dot(x, w) + b
-        y_hat = sigmoid(z)
+        y_hat = 1 / (1 + np.exp(-z))
 
         dL_dw = (y_hat - y_true) * y_hat * (1 - y_hat) * x
         dL_db = (y_hat - y_true) * y_hat * (1 - y_hat)
