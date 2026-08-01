@@ -21,30 +21,16 @@ class Solution:
         def LinearLayer(data, weight, bias):
             return np.dot(data, weight) + bias
 
-        for w, b in zip(weights, biases):
+        current = x 
 
-                LayerInput = x 
+        for i, (w, b) in enumerate(zip(weights, biases)):
+
+                output = LinearLayer(current, w, b)
             
-                output = LinearLayer(LayerInput, w, b)
-
-                # Layer = LinearLayer(current,w, b)
-                a = ReLu(output) 
-
-                x = a
+                if i == len(weights) - 1:
+                        current = output          # No ReLU
+                else:
+                        current = ReLu(output)    # Hidden layer
 
 
-
-
-        
-                # l1 = LinearLayer(x, w, b)
-                # a1 = ReLu(l1)
-
-                # l2= LinearLayer(a1, w, b) 
-                # a2 = ReLu(l2)
-
-                # l3 = LinarLayer(a2, w, b)
-                # a3 = ReLu(l3)
-
-                # l4 = LinearLayer(a3)
-
-        return np.round(output, 5)
+        return np.round(current, 5)
