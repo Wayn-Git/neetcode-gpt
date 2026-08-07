@@ -32,27 +32,24 @@ class Solution:
         #    with depth AND the last layer's fraction > 0.1
         # 4. 'healthy' if max dead fraction < 0.1
         # 5. 'healthy' otherwise
-        if len(dead_fractions) == 0:
+        if not dead_fractions:
             return 'healthy'
 
         max_frac = max(dead_fractions)
 
-        # Any layer > 0.5 dead -> use LeakyReLU
         if max_frac > 0.5:
             return 'use_leaky_relu'
 
-        # First layer > 0.3 dead -> reinitialize weights
         if dead_fractions[0] > 0.3:
             return 'reinitialize'
 
         # Dead fraction increases with depth -> reduce learning rate
-        if len(dead_fractions) >= 2:
-            increasing = all(
-                dead_fractions[i] < dead_fractions[i + 1]
-                for i in range(len(dead_fractions) - 1)
-            )
-            if increasing and dead_fractions[-1] > 0.1:
-                return 'reduce_learning_rate'
+        is_strictly_increasing = all(
+            dead_fractions[i] < dead_fractions[i + 1] 
+              for i in range(len(dead_fractions) - 1)
+        )
+        if is_strictly_increasing and dead_fractions[-1] > 0.1:
+            return 'reduce_learning_rate'
 
         # All layers < 0.1 dead -> healthy
         if max_frac < 0.1:
